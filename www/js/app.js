@@ -33,6 +33,17 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       })
 
 
+      .state('app.test', {
+        url: '/test',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/test/test.html',
+            controller: 'TestController'
+          }
+        }
+      })
+
+      
       .state('app.about', {
         url: '/about',
         views: {
