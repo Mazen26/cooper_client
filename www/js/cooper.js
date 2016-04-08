@@ -1,9 +1,3 @@
-Number.prototype.between = function(a, b) {
-  var min = Math.min.apply(Math, [a, b]),
-    max = Math.max.apply(Math, [a, b]);
-  return this >= min && this <= max;
-};
-
 function Person(attr) {
   this.gender = attr.gender;
   this.age = attr.age;
@@ -11,105 +5,104 @@ function Person(attr) {
 };
 
 
-Person.prototype.assessCooper = function(distance) {
+Person.prototype.assessCooper = function (distance) {
   if (this.gender.toLowerCase() == 'male') {
-    this.cooperMessage = this.getCooperResultsForMales(distance);
+    this.cooperMessage = this.resultForMale(distance);
   } else {
-    this.cooperMessage = this.getCooperResultsForFeales(distance);
+    this.cooperMessage = this.resultForFemale(distance);
   }
 };
-
-Person.prototype.getCooperResultsForMales = function(distance) {
+Person.prototype.resultForMale = function(distance) {
   var age = this.age;
   switch (true) {
-    case (age.between(13,14)):
+    case (13 <= age && age <= 14):
       switch (true) {
-        case (distance >= 2099):
+        case (distance < 2100):
           return 'Poor';
-        case (distance.between(2100, 2199)):
+        case (2100 <= distance && distance < 2200):
           return 'Below average';
-        case (distance.between(2200,2399)):
+        case (2200 <= distance && distance <  2400):
           return 'Average';
-        case (distance.between(2400,2699)):
+        case (2400 <= distance && distance < 2700):
           return 'Above average';
-        case (distance >= 2700):
+        case (2700 <= distance):
           return 'Excellent';
       }
       break;
 
 
-    case (age.between(15,16)):
+    case (15 <= age && age <= 16):
       switch (true) {
         case (distance < 2200):
           return 'Poor';
-        case (distance.between(2200, 2299)):
+        case (2200 <= distance && distance < 2300):
           return 'Below average';
-        case (distance.between(2300, 2499)):
+        case (2300 <= distance && distance < 2500):
           return 'Average';
-        case (distance.between(2500, 2799)):
+        case (2500 <= distance && distance < 2800):
           return 'Above average';
-        case (distance >= 2800):
+        case (2800 <= distance):
           return 'Excellent';
       }
       break;
 
 
-    case (age.between(17,19)):
+    case (17 <= age && age <=19):
       switch (true) {
-        case (distance < 2299):
+        case (distance < 2300):
           return 'Poor';
-        case (distance.between(2300, 2499)):
+        case (2300 <= distance && distance < 2500):
           return 'Below average';
-        case (distance.between(2500, 2699)):
+        case (2500 <= distance && distance < 2700):
           return 'Average';
-        case (distance.between(2700, 2999)):
+        case (2700 <= distance && distance < 3000):
           return 'Above average';
-        case (distance >= 3000):
+        case (3000 <= distance):
           return 'Excellent';
       }
       break;
 
-    case (age.between(20,29)):
+    case (20 <= age && age <=29):
       switch (true) {
         case (distance < 1600):
           return 'Poor';
-        case (distance.between(1600, 2199)):
+        case (1600 <=  distance && distance < 2200):
           return 'Below average';
-        case (distance.between(2200, 2399)):
+        case (2200 <= distance && distance < 2400):
           return 'Average';
-        case (distance.between(2400, 2799)):
+        case (2400 <= distance && distance < 2800):
           return 'Above average';
-        case (distance >= 2800):
+        case (2800 <= distance):
           return 'Excellent';
       }
       break;
 
-    case (age.between(30,39)):
+    case (30 <= age && age <=39):
       switch (true) {
         case (distance < 1500):
           return 'Poor';
-        case (distance.between(1400, 1199)):
+        case (1500 <= distance && distance < 2000):
           return 'Below average';
-        case (distance.between(2000, 2299)):
+        case (2000 <= distance && distance < 2300):
           return 'Average';
-        case (distance.between(2300, 2699)):
+        case (2300 <= distance && distance < 2700):
           return 'Above average';
-        case (distance >= 2700):
+        case (2700<= distance):
           return 'Excellent';
       }
       break;
 
-    case (age.between(40,49)):
+    case (40 <= age && age <= 49):
       switch (true) {
         case (distance < 1400):
           return 'Poor';
-        case (distance.between(1400, 1699)):
+        case (1400 <= distance && distance < 1700):
           return 'Below average';
-        case (distance.between(1700, 2099)):
+        case (1700 <= distance && distance < 2100):
           return 'Average';
-        case (distance.between(2100, 2499)):
+        case (2100 <= distance && distance < 2500):
           return 'Above average';
-        case ( distance >= 2500):
+        case (2500<= distance):
           return 'Excellent';
       }
       break;
@@ -118,13 +111,13 @@ Person.prototype.getCooperResultsForMales = function(distance) {
       switch (true) {
         case (distance < 1300):
           return 'Poor';
-        case (distance.between(1300, 1599)):
+        case (1300 <= distance && distance < 1600):
           return 'Below average';
-        case (distance.between(1600, 1999)):
+        case (1600 <= distance && distance < 2000):
           return 'Average';
-        case (distance.between(2000, 2399)):
+        case (2000 <= distance && distance < 2400):
           return 'Above average';
-        case (distance >= 2400):
+        case (2400 <= distance):
           return 'Excellent';
       }
       break;
@@ -132,113 +125,113 @@ Person.prototype.getCooperResultsForMales = function(distance) {
   }
 }
 
-Person.prototype.getCooperResultsForFeales = function(distance) {
+Person.prototype.resultForFemale = function(distance) {
   var age = this.age;
   switch (true) {
-    case (age.between(13,14)):
+    case (13 <= age && age <= 14):
       switch (true) {
         case (distance < 1500):
           return 'Poor';
-        case (distance.between(1500, 1599)):
+        case (1500 <= distance && distance < 1600):
           return 'Below average';
-        case (distance.between(1600, 1899)):
+        case (1600 <= distance && distance < 1900):
           return 'Average';
-        case (distance.between(1900, 1999)):
+        case (1900 <= distance && distance < 2000):
           return 'Above average';
-        case (distance >= 2000):
+        case (2000 <= distance):
           return 'Excellent';
       }
       break;
 
 
-    case (age.between(15,16)):
+    case (15<= age && age <= 16):
       switch (true) {
         case (distance < 1600):
           return 'Poor';
-        case (distance.between(1600, 1699)):
+        case (1600 <= distance && distance < 1700):
           return 'Below average';
-        case (distance.between(1700, 1999)):
+        case (1700 <= distance && distance < 2000):
           return 'Average';
-        case (distance.between(2000, 2099)):
+        case (2000 <= distance && distance < 2100):
           return 'Above average';
-        case (distance >= 2100):
+        case (2100 <= distance):
           return 'Excellent';
       }
       break;
 
 
-    case (age.between(17,19)):
+    case (17 <= age && age <= 19):
       switch (true) {
         case (distance < 1700):
           return 'Poor';
-        case (distance.between(1700, 1799)):
+        case (1700 <= distance && distance < 1800):
           return 'Below average';
-        case (distance.between(1800, 2099)):
+        case (1800 <= distance && distance < 2100):
           return 'Average';
-        case (distance.between(2100, 2299)):
+        case (2100 <= distance && distance < 2300):
           return 'Above average';
-        case (distance >= 2300):
+        case (2300 <= distance ):
           return 'Excellent';
       }
       break;
 
-    case (age.between(20,29)):
+    case (20 <= age && age <= 29):
       switch (true) {
         case (distance < 1500):
           return 'Poor';
-        case (distance.between(1500, 1799)):
+        case (1500 <= distance && distance < 1800):
           return 'Below average';
-        case (distance.between(1800, 2199)):
+        case (1800 <= distance && distance < 2200):
           return 'Average';
-        case (distance.between(2200, 2699)):
+        case (2200 <= distance && distance < 2700):
           return 'Above average';
-        case (distance >= 2700):
+        case (2700 <= distance):
           return 'Excellent';
 
       }
       break;
 
-    case (age.between(30,39)):
+    case (30 <= age && age <= 39):
       switch (true) {
         case (distance < 1400):
           return 'Poor';
-        case (distance.between(1400, 1699)):
+        case (1400 <= distance && distance < 1700):
           return 'Below average';
-        case (distance.between(1700, 1999)):
+        case (1700 <= distance && distance < 2000):
           return 'Average';
-        case (distance.between(2000, 2499)):
+        case (2000 <= distance && distance < 2500):
           return 'Above average';
-        case (distance >= 2500):
+        case (2500 <= distance):
           return 'Excellent';
       }
       break;
 
-    case (age.between(40,49)):
+    case (40 <= age && age <= 49):
       switch (true) {
         case (distance < 1200):
           return 'Poor';
-        case (distance.between(1200, 1499)):
+        case (1200 <= distance && distance < 1500):
           return 'Below average';
-        case (distance.between(1500, 1899)):
+        case (1500 <= distance && distance < 1900):
           return 'Average';
-        case (distance.between(1900, 2299)):
+        case (1900 <= distance && distance < 2300):
           return 'Above average';
-        case (distance >= 2300):
+        case (2300 <= distance):
           return 'Excellent';
       }
       break;
 
-    case (50 <= age):
+    case (50 <= age ):
       switch (true) {
         case (distance < 1100):
           return 'Poor';
-        case (distance.between(1100, 1399)):
+        case (1100<= distance && distance < 1400):
           return 'Below average';
-        case (distance.between(1400, 1699)):
+        case (1400 <= distance && distance < 1700):
           return 'Average';
-        case (distance.between(1700, 2199)):
+        case (1700 <= distance && distance < 2200):
           return 'Above average';
-        case (distance >= 2200):
+        case (2200<= distance):
           return 'Excellent';
       }
       break;
