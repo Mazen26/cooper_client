@@ -107,5 +107,22 @@ angular.module('starter.controllers', [])
         // Place some action here if needed...
       });
     };
+    $scope.retrieveData = function(){
+      $ionicLoading.show({
+        template: 'Retrieving data...'
+      });
+      performaceData.query({}, function(response){
+        $state.go('app.data', {savedDataCollection: response.entries});
+        $ionicLoading.hide();
+      }, function(error){
+        $ionicLoading.hide();
+        $scope.showAlert('Failure', error.statusText);
+      })
+    };
   })
 
+  .controller('DataCtrl', function($scope, $stateParams){
+    $scope.$on('$ionicView.enter', function () {
+      $scope.savedDataCollection = $stateParams.savedDataCollection;
+    });
+  })
