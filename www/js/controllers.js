@@ -85,8 +85,8 @@ angular.module('starter.controllers', [])
     };
   })
 
-  .controller('PerformanceCtrl', function($scope, performaceData, $ionicLoading, $state , $ionicPopup){
-    $scope.saveData = function(person){
+  .controller('PerformanceCtrl', function ($scope, performaceData, $ionicLoading, $state, $ionicPopup) {
+    $scope.saveData = function (person) {
       var data = {performance_data: {data: {message: person.cooperMessage, distance: person.distance}}};
       console.log('Data:' + person.cooperMessage + $scope.data.distance);
 
@@ -94,39 +94,63 @@ angular.module('starter.controllers', [])
         template: 'Saving...'
       });
       console.log($scope.currentUser);
-      performaceData.save(data, function(response){
+      performaceData.save(data, function (response) {
         $ionicLoading.hide();
         $scope.showAlert('Sucess', response.message);
-      }, function(error){
+      }, function (error) {
         $ionicLoading.hide();
         $scope.showAlert('Failure', error.statusText);
       })
     };
-    $scope.showAlert = function(message, content) {
+    $scope.showAlert = function (message, content) {
       var alertPopup = $ionicPopup.alert({
         title: message,
         template: content
       });
-      alertPopup.then(function(res) {
+      alertPopup.then(function (res) {
         // Place some action here if needed...
       });
     };
-    $scope.retrieveData = function(){
+    $scope.retrieveData = function () {
       $ionicLoading.show({
         template: 'Retrieving data...'
       });
-      performaceData.query({}, function(response){
+      performaceData.query({}, function (response) {
         $state.go('app.data', {savedDataCollection: response.entries});
         $ionicLoading.hide();
-      }, function(error){
+      }, function (error) {
         $ionicLoading.hide();
         $scope.showAlert('Failure', error.statusText);
       })
     };
   })
 
-  .controller('DataCtrl', function($scope, $stateParams){
+  .controller('DataCtrl', function ($scope, $stateParams) {
     $scope.$on('$ionicView.enter', function () {
       $scope.savedDataCollection = $stateParams.savedDataCollection;
+      $scope.labels = getLabels($scope.savedDataCollection);
+      $scope.data = [];
+      angular.forEach($scope.labels, function (label) {
+        $scope.data.push(getCount($scope.savedDataCollection, label));
+      });
+      $scope.radardata = [$scope.data];
     });
+
+    function getLabels(collection) {
+      var uniqueLabels = [];
+      for (i = 0; i < collection.length; i++) {
+        if (collection[i].data.message && uniqueLabels.indexOf(collection[i].data.message) === -1) {
+          uniqueLabels.push(collection[i].data.message);
+        }
+      }
+      return uniqueLabels;
+    }
+
+    function getCount(arr, value) {
+      var count = 0;
+      angular.forEach(arr, function (entry) {
+        count += entry.data.message == value ? 1 : 0;
+      });
+      return count;
+    }
   })
