@@ -5,3 +5,28 @@
     </div>
   </ion-content>
 </ion-view>
+
+<ion-view title="Historical Data" ng-init="init()">
+  <ion-content>
+    <div class="list card">
+      <div class="item item-body">
+        <div ng-if="savedDataCollection" ng-repeat="entry in savedDataCollection ">
+          <p ng-if="entry.data.message">{{entry.data.message}} - {{entry.created_at | date:'mediumDate'}}</p>
+        </div>
+        <div class="item tabs tabs-secondary tabs-icon-left">
+            <a class="tab-item" href="#">
+              <i class="icon ion-thumbsup"></i>
+              Like
+            </a>
+            <a class="tab-item" href="#">
+              <i class="icon ion-chatbox"></i>
+              Comment
+            </a>
+            <a class="tab-item" href="#">
+              <i class="icon ion-share"></i>
+              Share
+            </a>
+          </div>
+      </div>
+  </ion-content>
+</ion-view>

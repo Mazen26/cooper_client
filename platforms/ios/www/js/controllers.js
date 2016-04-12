@@ -1,56 +1,129 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+  .controller('AppCtrl', function ($rootScope,
+                                   $scope,
+                                   $ionicModal,
+                                   $timeout,
+                                   $auth,
+                                   $ionicLoading) {
 
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+    // With the new view caching in Ionic, Controllers are only called
+    // when they are recreated or on app start, instead of every page change.
+    // To listen for when this page is active (for example, to refresh data),
+    // listen for the $ionicView.enter event:
+    //$scope.$on('$ionicView.enter', function(e) {
+    //});
 
-  // Form data for the login modal
-  $scope.loginData = {};
+    $rootScope.$on('auth:login-success', function (ev, user) {
+      $scope.currentUser = angular.extend(user, $auth.retrieveData('auth_headers'));
 
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
+    });
 
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
+    // Form data for the login modal
+    $scope.loginData = {};
 
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
+    // Create the login modal that we will use later
+    $ionicModal.fromTemplateUrl('templates/login.html', {
+      scope: $scope
+    }).then(function (modal) {
+      $scope.modal = modal;
+    });
 
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
+    // Triggered in the login modal to close it
+    $scope.closeLogin = function () {
+      $scope.modal.hide();
+    };
 
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
-})
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
+    // Open the login modal
+    $scope.login = function () {
+      $scope.modal.show();
+    };
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-});
+    // Perform the login action when the user submits the login form
+    $scope.doLogin = function () {
+      console.log('Doing login', $scope.loginData);
+      $ionicLoading.show({
+        template: 'Logging in...'
+      });
+      $auth.submitLogin($scope.loginData)
+        .then(function (resp) {
+          // handle success response
+          $ionicLoading.hide();
+          $scope.closeLogin();
+        })
+        .catch(function (error) {
+          $ionicLoading.hide();
+          $scope.errorMessage = error;
+        });
+    };
+  })
+
+
+  .controller('TestController', function ($scope) {
+    $scope.gender = ['Male', 'Female']
+    $scope.ageValues = {
+      min: 20,
+      max: 60,
+      value: 20
+    };
+    $scope.distanceValues = {
+      min: 1000,
+      max: 3500,
+      value: 1000
+    };
+    $scope.data = {};
+    $scope.calculateCooper = function () {
+      var person = new Person({
+        gender: $scope.data.gender,
+        age: $scope.data.age
+      });
+      person.assessCooper($scope.data.distance);
+      $scope.person = person;
+      console.log($scope.person)
+    };
+  })
+
+  .controller('PerformanceCtrl', function($scope, performaceData, $ionicLoading, $state , $ionicPopup){
+    $scope.saveData = function(person){
+      var data = {performace_data: {data: {message: person.cooperMessage}}};
+      $ionicLoading.show({
+        template: 'Saving...'
+      });
+      console.log($scope.currentUser);
+      performaceData.save(data, function(response){
+        $ionicLoading.hide();
+        $scope.showAlert('Sucess', response.message);
+      }, function(error){
+        $ionicLoading.hide();
+        $scope.showAlert('Failure', error.statusText);
+      })
+    };
+    $scope.showAlert = function(message, content) {
+      var alertPopup = $ionicPopup.alert({
+        title: message,
+        template: content
+      });
+      alertPopup.then(function(res) {
+        // Place some action here if needed...
+      });
+    };
+    $scope.retrieveData = function(){
+      $ionicLoading.show({
+        template: 'Retrieving data...'
+      });
+      performaceData.query({}, function(response){
+        $state.go('app.data', {savedDataCollection: response.entries});
+        $ionicLoading.hide();
+      }, function(error){
+        $ionicLoading.hide();
+        $scope.showAlert('Failure', error.statusText);
+      })
+    };
+  })
+
+  .controller('DataCtrl', function($scope, $stateParams){
+    $scope.$on('$ionicView.enter', function () {
+      $scope.savedDataCollection = $stateParams.savedDataCollection;
+    });
+  })
