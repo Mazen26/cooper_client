@@ -76,7 +76,8 @@ angular.module('starter.controllers', [])
     $scope.calculateCooper = function () {
       var person = new Person({
         gender: $scope.data.gender,
-        age: $scope.data.age
+        age: $scope.data.age,
+        distance: $scope.data.distance
       });
       person.assessCooper($scope.data.distance);
       $scope.person = person;
@@ -86,8 +87,9 @@ angular.module('starter.controllers', [])
 
   .controller('PerformanceCtrl', function($scope, performaceData, $ionicLoading, $state , $ionicPopup){
     $scope.saveData = function(person){
-      var data = {performance_data: {data: {message: person.cooperMessage}}};
-      
+      var data = {performance_data: {data: {message: person.cooperMessage, distance: person.distance}}};
+      console.log('Data:' + person.cooperMessage + $scope.data.distance);
+
       $ionicLoading.show({
         template: 'Saving...'
       });
