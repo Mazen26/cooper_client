@@ -11,20 +11,27 @@
         {{error}}
       </p>
     </div>
+
     <form name="login" ng-submit="doLogin()">
       <div class="list">
-        <label class="item item-input">
-          <i class="ion-email"></i>
-          <input class="loginInput"type="text" ng-model="loginData.email" placeholder="Email">
+        <label class="item item-input"><i class="ion-email"></i>
+          <input class="loginInput"
+                 type="email"
+                 ng-model="loginData.email"
+                 placeholder="Email">
         </label>
-        <label class="item item-input">
-          <i class=" ion-unlocked"></i>
-          <input class="loginInput" type="password" ng-model="loginData.password" placeholder="Password">
+        <label class="item item-input"><i class=" ion-unlocked"></i>
+          <input class="loginInput"
+                 type="password"
+                 placeholder="Password"
+                 ng-model="loginData.password">
         </label>
         <label class="item">
-          <button class="button button-block button-positive" type="submit">Log in</button>
+          <button class="button button-block button-positive"
+                  type="submit">Log in</button>
         </label>
       </div>
     </form>
+
   </ion-content>
 </ion-modal-view>

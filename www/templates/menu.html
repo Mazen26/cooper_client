@@ -27,6 +27,9 @@
         <ion-item ng-if="currentUser" menu-close ng-controller="PerformanceCtrl" ng-click="retrieveData()">
           Saved results
         </ion-item>
+        <ion-item ng-if="currentUser" menu-close ng-click="logout()">
+          Logout
+        </ion-item>
       </ion-list>
     </ion-content>
   </ion-side-menu>

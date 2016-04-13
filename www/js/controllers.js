@@ -57,6 +57,10 @@ angular.module('starter.controllers', [])
           $scope.errorMessage = error;
         });
     };
+    $scope.logout = function () {
+      $auth.signOut();
+      redirectTo: '/'
+    };
   })
 
 
