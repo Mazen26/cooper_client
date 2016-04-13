@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ionic'])
 
   .controller('AppCtrl', function ($rootScope,
                                    $scope,
@@ -59,10 +59,56 @@ angular.module('starter.controllers', [])
     };
     $scope.logout = function () {
       $auth.signOut();
-      redirectTo: '/'
+      // redirectTo: '/'
     };
   })
 
+  .controller('UserRegistrationsCtrl', ['$scope', '$location', '$auth', function ($rootScope,
+                                                                                  $scope,
+                                                                                  $ionicModal,
+                                                                                  $timeout,
+                                                                                  $auth,
+                                                                                  $location,
+                                                                                  $ionicLoading) {
+
+
+
+
+    // Create the login modal that we will use later
+    $ionicModal.fromTemplateUrl('templates/signup.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function (modal) {
+      $scope.modal = modal;
+    });
+
+    $scope.signUp = function () {
+      $scope.modal.show();
+    };
+
+    $scope.closeSignUp = function () {
+      $scope.modal.hide();
+    };
+
+    // Form data for the login modal
+    $scope.registrationForm = {};
+
+    $scope.registration = function () {
+      $auth.submitRegistration($scope.registrationForm);
+      console.log($scope.registrationForm);
+      $scope.handleRegBtnClick = function () {
+        $auth.submitRegistration($scope.registrationForm)
+          .then(function () {
+            $auth.submitLogin({
+              email: $scope.registrationForm.email,
+              password: $scope.registrationForm.password
+            });
+          });
+      };
+    };
+
+
+  }])
 
   .controller('TestController', function ($scope) {
     $scope.gender = ['Male', 'Female']

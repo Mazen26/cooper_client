@@ -1,0 +1,49 @@
+<ion-modal-view>
+  <!--<ion-header-bar>-->
+    <!--<h1 class="title">SignUp</h1>-->
+    <!--<div class="buttons">-->
+    <!--<button class="button button-clear" ng-click="closeSignUp()">Close</button>-->
+    <!--</div>-->
+  <!--</ion-header-bar>-->
+  <ion-content>
+    <!--<div class="row" ng-if="errorMessage">-->
+    <!--<p ng-repeat="error in errorMessage.errors">-->
+    <!--{{error}}-->
+    <!--</p>-->
+    <!--</div>-->
+
+    <form name="login" ng-submit="registration()">
+      <!--<form ng-submit="handleRegBtnClick()" role="form" ng-init="registrationForm = {}">-->
+
+        <div class="list">
+          <label class="item item-input"><i class="ion-email"></i>
+            <input class="loginInput"
+                   type="email"
+                   ng-model="registrationForm.email"
+                   placeholder="Email"
+                   required="required">
+          </label>
+          <label class="item item-input"><i class=" ion-unlocked"></i>
+            <input class="loginInput"
+                   type="password"
+                   placeholder="Password"
+                   ng-model="registrationForm.password"
+                   required="required">
+          </label>
+          <label class="item item-input"><i class=" ion-unlocked"></i>
+            <input class="loginInput"
+                   type="password"
+                   placeholder="Password Confirmation "
+                   ng-model="registrationForm.password_confirmation"
+                   required="required">
+          </label>
+          <label class="item">
+            <button class="button button-block button-positive"
+                    type="submit">Sign Up
+            </button>
+          </label>
+        </div>
+      </form>
+
+  </ion-content>
+</ion-modal-view>
