@@ -1,16 +1,10 @@
-<ion-modal-view>
-  <ion-header-bar>
-    <h1 class="title">SignUp</h1>
-    <div class="buttons">
-    <button class="button button-clear" ng-click="closeSignUp()">Close</button>
+<ion-view title="SignUp">
+  <ion-content>
+    <div class="row" ng-if="errorMessage">
+    <p ng-repeat="error in errorMessage.errors">
+    {{error}}
+    </p>
     </div>
-  </ion-header-bar>
-  <ion-content class="has-header padding">
-    <!--<div class="row" ng-if="errorMessage">-->
-    <!--<p ng-repeat="error in errorMessage.errors">-->
-    <!--{{error}}-->
-    <!--</p>-->
-    <!--</div>-->
 
       <form ng-submit="submitRegistration(registrationForm)" role="form" ng-init="registrationForm = {}">
 
@@ -36,13 +30,13 @@
                    ng-model="registrationForm.password_confirmation"
                    required="required">
           </label>
-          <label class="item">
+          <div class="item">
             <button class="button button-block button-positive"
                     type="submit">Sign Up
             </button>
-          </label>
+          </div>
         </div>
       </form>
 
   </ion-content>
-</ion-modal-view>
+</ion-view>
