@@ -5,6 +5,7 @@ angular.module('starter.controllers', ['ionic'])
                                    $ionicModal,
                                    $timeout,
                                    $auth,
+                                   $window,
                                    $ionicLoading) {
 
     // With the new view caching in Ionic, Controllers are only called
@@ -58,38 +59,31 @@ angular.module('starter.controllers', ['ionic'])
         });
     };
     $scope.logout = function () {
+      $ionicLoading.show({
+        template: 'Logging out...'
+      });
       $auth.signOut()
-        .then(function(resp) {
-          // handle success response
+        .then(function (resp) {
+          $ionicLoading.hide();
+          $window.location.href = '/';
+
         })
-        .catch(function(resp) {
+        .catch(function (resp) {
           // handle error response
         });
     };
   })
 
-  .controller('UserRegistrationsCtrl',function ($rootScope,
-                                                                                  $scope,
-                                                                                  $ionicModal,
-                                                                                  $timeout,
-                                                                                  $auth,
-                                                                                  $location,
-                                                                                  $ionicLoading) {
+  .controller('UserRegistrationsCtrl', function ($rootScope,
+                                                 $scope,
+                                                 $timeout,
+                                                 $auth,
+                                                 $location,
+                                                 $ionicLoading) {
 
-
-
-
-    // Create the login modal that we will use later
-    $ionicModal.fromTemplateUrl('templates/signup.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function (modal) {
-      $scope.modal = modal;
+    $scope.$on('auth:registration-email-error', function(ev, reason) {
+      $scope.error = reason.errors[0];
     });
-
-    $scope.signUp = function () {
-      $scope.modal.show();
-    };
 
     $scope.closeSignUp = function () {
       $scope.modal.hide();
@@ -100,19 +94,19 @@ angular.module('starter.controllers', ['ionic'])
 
     $scope.handleRegBtnClick = function () {
       $auth.submitRegistration($scope.registrationForm);
-      console.log('Registration',$scope.registrationForm);
-      $scope.handleRegBtnClick = function () {
-        $auth.submitRegistration($scope.registrationForm)
-          .then(function () {
-            $auth.submitLogin({
-              email: $scope.registrationForm.email,
-              password: $scope.registrationForm.password
-            });
-          });
-      };
+      console.log('Registration', $scope.registrationForm);
+      $auth.submitLogin({
+          email: $scope.registrationForm.email,
+          password: $scope.registrationForm.password
+        })
+
+        .then(function (resp) {
+          // handle success response
+        })
+        .catch(function (resp) {
+          // handle error response
+        });
     };
-
-
   })
 
   .controller('TestController', function ($scope) {
