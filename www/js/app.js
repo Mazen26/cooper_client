@@ -40,17 +40,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'AppCtrl'
       })
 
-      .state('app.signUp', {
+      .state('signup', {
         url: '/signup',
         // params: {
         //   registrationForm: {}
         // },
-        views: {
-          'menuContent': {
+        // views: {
+        //   'menuContent': {
             templateUrl: 'templates/signup.html',
             controller: 'UserRegistrationsCtrl'
-          }
-        }
+        //   }
+        // }
       })
 
       .state('app.test', {

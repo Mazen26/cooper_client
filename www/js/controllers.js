@@ -58,10 +58,15 @@ angular.module('starter.controllers', ['ionic'])
         });
     };
     $scope.logout = function () {
-      $auth.signOut();
-      // redirectTo: '/'
+      $auth.signOut()
+        .then(function(resp) {
+          // handle success response
+        })
+        .catch(function(resp) {
+          // handle error response
+        });
     };
-  })
+  });
 
   .controller('UserRegistrationsCtrl', ['$scope', '$location', '$auth', function ($rootScope,
                                                                                   $scope,
@@ -93,9 +98,9 @@ angular.module('starter.controllers', ['ionic'])
     // Form data for the login modal
     $scope.registrationForm = {};
 
-    $scope.registration = function () {
+    $scope.handleRegBtnClick = function () {
       $auth.submitRegistration($scope.registrationForm);
-      console.log($scope.registrationForm);
+      console.log('Registration',$scope.registrationForm);
       $scope.handleRegBtnClick = function () {
         $auth.submitRegistration($scope.registrationForm)
           .then(function () {
