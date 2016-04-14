@@ -66,9 +66,9 @@ angular.module('starter.controllers', ['ionic'])
           // handle error response
         });
     };
-  });
+  })
 
-  .controller('UserRegistrationsCtrl', ['$scope', '$location', '$auth', function ($rootScope,
+  .controller('UserRegistrationsCtrl',function ($rootScope,
                                                                                   $scope,
                                                                                   $ionicModal,
                                                                                   $timeout,
@@ -113,7 +113,7 @@ angular.module('starter.controllers', ['ionic'])
     };
 
 
-  }])
+  })
 
   .controller('TestController', function ($scope) {
     $scope.gender = ['Male', 'Female']
