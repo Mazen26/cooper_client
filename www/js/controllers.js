@@ -70,6 +70,8 @@ angular.module('starter.controllers', ['ionic'])
         })
         .catch(function (resp) {
           // handle error response
+          $ionicLoading.hide();
+          $scope.errorMessage = error;
         });
     };
   })
@@ -79,35 +81,53 @@ angular.module('starter.controllers', ['ionic'])
                                                  $timeout,
                                                  $auth,
                                                  $location,
+                                                 $window,
                                                  $ionicLoading) {
-
-    $scope.$on('auth:registration-email-error', function(ev, reason) {
-      $scope.error = reason.errors[0];
-    });
-
-    $scope.closeSignUp = function () {
-      $scope.modal.hide();
-    };
-
     // Form data for the login modal
-    $scope.registrationForm = {};
+    $scope.signUpData = {};
 
-    $scope.handleRegBtnClick = function () {
-      $auth.submitRegistration($scope.registrationForm);
-      console.log('Registration', $scope.registrationForm);
-      $auth.submitLogin({
-          email: $scope.registrationForm.email,
-          password: $scope.registrationForm.password
-        })
-
-        .then(function (resp) {
-          // handle success response
-        })
-        .catch(function (resp) {
-          // handle error response
-        });
-    };
+    $scope.doSignUp = function () {
+      console.log('Signing Up', $scope.signUpData);
+      $ionicLoading.show({
+        template: 'Signing Up ...'
+      });
+        $auth.submitRegistration($scope.signUpData);
+        $auth.submitLogin({
+          email: $scope.signUpData.email,
+          password: $scope.signUpData.password
+               })
+          .then(function (resp) {
+            // handle success response
+            $ionicLoading.hide();
+            $scope.$on('auth:email-confirmation-success', function(ev, user) {
+              alert("Welcome, "+user.email+". Your account has been verified.");
+            });
+            $window.location.href = '/templates/test/test.html';
+          })
+          .catch(function (resp) {
+            // handle error response
+            $ionicLoading.hide();
+            $scope.errorMessage = error;
+          });
+      };
   })
+
+  //     $auth.submitRegistration($scope.registrationForm);
+  //     $auth.submitLogin({
+  //         email: $scope.registrationForm.email,
+  //         password: $scope.registrationForm.password
+  //       })
+  //
+  //       .then(function (resp) {
+  //         // handle success response
+  //         $ionicLoading.hide();
+  //         $window.location.href = '/templates/test/test.html';
+  //       })
+  //       .catch(function (resp) {
+  //         // handle error response
+  //       });
+  //   };
+  // })
 
   .controller('TestController', function ($scope) {
     $scope.gender = ['Male', 'Female']

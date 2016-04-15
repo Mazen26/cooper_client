@@ -6,13 +6,13 @@
     </p>
     </div>
 
-      <form ng-submit="submitRegistration(registrationForm)" role="form" ng-init="registrationForm = {}">
+      <form ng-submit="doSignUp()" role="form">
 
         <div class="list">
           <label class="item item-input"><i class="ion-email"></i>
             <input class="loginInput"
                    type="email"
-                   ng-model="registrationForm.email"
+                   ng-model="signUpData.email"
                    placeholder="Email"
                    required="required">
           </label>
@@ -20,14 +20,14 @@
             <input class="loginInput"
                    type="password"
                    placeholder="Password"
-                   ng-model="registrationForm.password"
+                   ng-model="signUpData.password"
                    required="required">
           </label>
           <label class="item item-input"><i class=" ion-unlocked"></i>
             <input class="loginInput"
                    type="password"
                    placeholder="Password Confirmation "
-                   ng-model="registrationForm.password_confirmation"
+                   ng-model="signUpData.password_confirmation"
                    required="required">
           </label>
           <div class="item">
