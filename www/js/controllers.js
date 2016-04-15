@@ -82,7 +82,14 @@ angular.module('starter.controllers', ['ionic'])
                                                  $auth,
                                                  $location,
                                                  $window,
+                                                 $ionicHistory,
+                                                 $state,
                                                  $ionicLoading) {
+
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
+
     // Form data for the login modal
     $scope.signUpData = {};
 
@@ -91,25 +98,54 @@ angular.module('starter.controllers', ['ionic'])
       $ionicLoading.show({
         template: 'Signing Up ...'
       });
-        $auth.submitRegistration($scope.signUpData);
-        $auth.submitLogin({
-          email: $scope.signUpData.email,
-          password: $scope.signUpData.password
-               })
-          .then(function (resp) {
-            // handle success response
+        $auth.submitRegistration($scope.signUpData)
+          .then(
+          function(){
+            var params = {email: $scope.signUpData.email, password: $scope.signUpData.password};
+            $scope.doLogin(params);
+            $state.go('app.test');
+            //$window.location.href = '#/app/test';
             $ionicLoading.hide();
-            $scope.$on('auth:email-confirmation-success', function(ev, user) {
-              alert("Welcome, "+user.email+". Your account has been verified.");
-            });
-            $window.location.href = '/templates/test/test.html';
-          })
-          .catch(function (resp) {
-            // handle error response
-            $ionicLoading.hide();
-            $scope.errorMessage = error;
-          });
+          }
+        ).catch(function(error){
+          $scope.errorMessage = error;
+          $ionicLoading.hide();
+
+        });
+      // success fallback
+
+      // error fallback
+      //  $auth.submitLogin({
+      //    email: $scope.signUpData.email,
+      //    password: $scope.signUpData.password
+      //         })
+      //    .then(function (resp) {
+      //      // handle success response
+      //      $ionicLoading.hide();
+      //      $scope.$on('auth:email-confirmation-success', function(ev, user) {
+      //        alert("Welcome, "+user.email+". Your account has been verified.");
+      //      });
+      //      $window.location.href = '/templates/test/test.html';
+      //    })
+      //    .catch(function (resp) {
+      //      // handle error response
+      //      $ionicLoading.hide();
+      //      $scope.errorMessage = error;
+      //    });
       };
+
+    $scope.doLogin = function(params){
+      $auth.submitLogin(params).then(
+        function(response){
+          console.log(response);
+        }
+      ).catch(
+        function(error){
+          $scope.errorMessage = error;
+          console.log(error);
+        }
+      );
+    }
   })
 
   //     $auth.submitRegistration($scope.registrationForm);
