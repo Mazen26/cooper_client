@@ -1,10 +1,11 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ionic'])
 
   .controller('AppCtrl', function ($rootScope,
                                    $scope,
                                    $ionicModal,
                                    $timeout,
                                    $auth,
+                                   $window,
                                    $ionicLoading) {
 
     // With the new view caching in Ionic, Controllers are only called
@@ -57,8 +58,112 @@ angular.module('starter.controllers', [])
           $scope.errorMessage = error;
         });
     };
+    $scope.logout = function () {
+      $ionicLoading.show({
+        template: 'Logging out...'
+      });
+      $auth.signOut()
+        .then(function (resp) {
+          $ionicLoading.hide();
+          $window.location.href = '/';
+
+        })
+        .catch(function (resp) {
+          // handle error response
+          $ionicLoading.hide();
+          $scope.errorMessage = error;
+        });
+    };
   })
 
+  .controller('UserRegistrationsCtrl', function ($rootScope,
+                                                 $scope,
+                                                 $timeout,
+                                                 $auth,
+                                                 $location,
+                                                 $window,
+                                                 $ionicHistory,
+                                                 $state,
+                                                 $ionicLoading) {
+
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
+
+    // Form data for the login modal
+    $scope.signUpData = {};
+
+    $scope.doSignUp = function () {
+      console.log('Signing Up', $scope.signUpData);
+      $ionicLoading.show({
+        template: 'Signing Up ...'
+      });
+        $auth.submitRegistration($scope.signUpData)
+          .then(
+          function(){
+            var params = {email: $scope.signUpData.email, password: $scope.signUpData.password};
+            $scope.doLogin(params);
+            $state.go('app.test');
+            //$window.location.href = '#/app/test';
+            $ionicLoading.hide();
+          }
+        ).catch(function(error){
+          $scope.errorMessage = error;
+          $ionicLoading.hide();
+
+        });
+      // success fallback
+
+      // error fallback
+      //  $auth.submitLogin({
+      //    email: $scope.signUpData.email,
+      //    password: $scope.signUpData.password
+      //         })
+      //    .then(function (resp) {
+      //      // handle success response
+      //      $ionicLoading.hide();
+      //      $scope.$on('auth:email-confirmation-success', function(ev, user) {
+      //        alert("Welcome, "+user.email+". Your account has been verified.");
+      //      });
+      //      $window.location.href = '/templates/test/test.html';
+      //    })
+      //    .catch(function (resp) {
+      //      // handle error response
+      //      $ionicLoading.hide();
+      //      $scope.errorMessage = error;
+      //    });
+      };
+
+    $scope.doLogin = function(params){
+      $auth.submitLogin(params).then(
+        function(response){
+          console.log(response);
+        }
+      ).catch(
+        function(error){
+          $scope.errorMessage = error;
+          console.log(error);
+        }
+      );
+    }
+  })
+
+  //     $auth.submitRegistration($scope.registrationForm);
+  //     $auth.submitLogin({
+  //         email: $scope.registrationForm.email,
+  //         password: $scope.registrationForm.password
+  //       })
+  //
+  //       .then(function (resp) {
+  //         // handle success response
+  //         $ionicLoading.hide();
+  //         $window.location.href = '/templates/test/test.html';
+  //       })
+  //       .catch(function (resp) {
+  //         // handle error response
+  //       });
+  //   };
+  // })
 
   .controller('TestController', function ($scope) {
     $scope.gender = ['Male', 'Female']
@@ -76,7 +181,8 @@ angular.module('starter.controllers', [])
     $scope.calculateCooper = function () {
       var person = new Person({
         gender: $scope.data.gender,
-        age: $scope.data.age
+        age: $scope.data.age,
+        distance: $scope.data.distance
       });
       person.assessCooper($scope.data.distance);
       $scope.person = person;
@@ -84,46 +190,72 @@ angular.module('starter.controllers', [])
     };
   })
 
-  .controller('PerformanceCtrl', function($scope, performaceData, $ionicLoading, $state , $ionicPopup){
-    $scope.saveData = function(person){
-      var data = {performace_data: {data: {message: person.cooperMessage}}};
+  .controller('PerformanceCtrl', function ($scope, performaceData, $ionicLoading, $state, $ionicPopup) {
+    $scope.saveData = function (person) {
+      var data = {performance_data: {data: {message: person.cooperMessage, distance: person.distance}}};
+      console.log('Data:' + person.cooperMessage + $scope.data.distance);
+
       $ionicLoading.show({
         template: 'Saving...'
       });
       console.log($scope.currentUser);
-      performaceData.save(data, function(response){
+      performaceData.save(data, function (response) {
         $ionicLoading.hide();
         $scope.showAlert('Sucess', response.message);
-      }, function(error){
+      }, function (error) {
         $ionicLoading.hide();
         $scope.showAlert('Failure', error.statusText);
       })
     };
-    $scope.showAlert = function(message, content) {
+    $scope.showAlert = function (message, content) {
       var alertPopup = $ionicPopup.alert({
         title: message,
         template: content
       });
-      alertPopup.then(function(res) {
+      alertPopup.then(function (res) {
         // Place some action here if needed...
       });
     };
-    $scope.retrieveData = function(){
+    $scope.retrieveData = function () {
       $ionicLoading.show({
         template: 'Retrieving data...'
       });
-      performaceData.query({}, function(response){
+      performaceData.query({}, function (response) {
         $state.go('app.data', {savedDataCollection: response.entries});
         $ionicLoading.hide();
-      }, function(error){
+      }, function (error) {
         $ionicLoading.hide();
         $scope.showAlert('Failure', error.statusText);
       })
     };
   })
 
-  .controller('DataCtrl', function($scope, $stateParams){
+  .controller('DataCtrl', function ($scope, $stateParams) {
     $scope.$on('$ionicView.enter', function () {
       $scope.savedDataCollection = $stateParams.savedDataCollection;
+      $scope.labels = getLabels($scope.savedDataCollection);
+      $scope.data = [];
+      angular.forEach($scope.labels, function (label) {
+        $scope.data.push(getCount($scope.savedDataCollection, label));
+      });
+      $scope.radardata = [$scope.data];
     });
+
+    function getLabels(collection) {
+      var uniqueLabels = [];
+      for (i = 0; i < collection.length; i++) {
+        if (collection[i].data.message && uniqueLabels.indexOf(collection[i].data.message) === -1) {
+          uniqueLabels.push(collection[i].data.message);
+        }
+      }
+      return uniqueLabels;
+    }
+
+    function getCount(arr, value) {
+      var count = 0;
+      angular.forEach(arr, function (entry) {
+        count += entry.data.message == value ? 1 : 0;
+      });
+      return count;
+    }
   })
