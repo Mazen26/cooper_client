@@ -24,6 +24,9 @@
         <ion-item ng-if="!currentUser" menu-close href="#/app/signup">
           SignUp
         </ion-item>
+        <ion-item ng-if="!currentUser" menu-close ng-click="fbSignUp()">
+          FB SignUp
+        </ion-item>
         <ion-item menu-close href="#/app/test">
           Cooper Test
         </ion-item>

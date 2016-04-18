@@ -42,9 +42,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       .state('app.signup', {
         url: '/signup',
-        // params: {
-        //   registrationForm: {}
-        // },
         views: {
           'menuContent': {
             templateUrl: 'templates/signup.html',

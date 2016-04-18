@@ -45,6 +45,7 @@
 		BC0A314CC80541AD9D776C7B /* CDVViewController+SplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = B618633480354348A97E9B5F /* CDVViewController+SplashScreen.m */; };
 		3317CEF8DB3344F5B14C0711 /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD2C8E820B4280AFE4E238 /* CDVStatusBar.m */; };
 		31F57E10770C49B2948CC46C /* IonicKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 305CA7A99DCD45EF81CB5683 /* IonicKeyboard.m */; };
+		1169239805954B3A86E50A72 /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7E38491FEE4B67B5DBD430 /* CDVInAppBrowser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +123,8 @@
 		11EDD78328214CA3B0FB8EE9 /* CDVStatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVStatusBar.h"; path = "cordova-plugin-statusbar/CDVStatusBar.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		305CA7A99DCD45EF81CB5683 /* IonicKeyboard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "IonicKeyboard.m"; path = "ionic-plugin-keyboard/IonicKeyboard.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		397524C497414327AA10BA26 /* IonicKeyboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "IonicKeyboard.h"; path = "ionic-plugin-keyboard/IonicKeyboard.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		6E7E38491FEE4B67B5DBD430 /* CDVInAppBrowser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVInAppBrowser.m"; path = "cordova-plugin-inappbrowser/CDVInAppBrowser.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		13AAAC0C2A5340AABC5CEE06 /* CDVInAppBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVInAppBrowser.h"; path = "cordova-plugin-inappbrowser/CDVInAppBrowser.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +235,8 @@
 				11EDD78328214CA3B0FB8EE9 /* CDVStatusBar.h */,
 				305CA7A99DCD45EF81CB5683 /* IonicKeyboard.m */,
 				397524C497414327AA10BA26 /* IonicKeyboard.h */,
+				6E7E38491FEE4B67B5DBD430 /* CDVInAppBrowser.m */,
+				13AAAC0C2A5340AABC5CEE06 /* CDVInAppBrowser.h */,
 			);
 			name = Plugins;
 			path = "cooper_client/Plugins";
@@ -422,6 +427,7 @@
 				BC0A314CC80541AD9D776C7B /* CDVViewController+SplashScreen.m in Sources */,
 				3317CEF8DB3344F5B14C0711 /* CDVStatusBar.m in Sources */,
 				31F57E10770C49B2948CC46C /* IonicKeyboard.m in Sources */,
+				1169239805954B3A86E50A72 /* CDVInAppBrowser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

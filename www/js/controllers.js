@@ -56,6 +56,7 @@ angular.module('starter.controllers', ['ionic'])
         .catch(function (error) {
           $ionicLoading.hide();
           $scope.errorMessage = error;
+          console.log(error);
         });
     };
     $scope.logout = function () {
@@ -68,7 +69,7 @@ angular.module('starter.controllers', ['ionic'])
           $window.location.href = '/';
 
         })
-        .catch(function (resp) {
+        .catch(function (error) {
           // handle error response
           $ionicLoading.hide();
           $scope.errorMessage = error;
@@ -84,7 +85,8 @@ angular.module('starter.controllers', ['ionic'])
                                                  $window,
                                                  $ionicHistory,
                                                  $state,
-                                                 $ionicLoading) {
+                                                 $ionicLoading,
+                                                 $ionicPopup) {
 
     $ionicHistory.nextViewOptions({
       disableBack: true
@@ -98,51 +100,47 @@ angular.module('starter.controllers', ['ionic'])
       $ionicLoading.show({
         template: 'Signing Up ...'
       });
-        $auth.submitRegistration($scope.signUpData)
-          .then(
-          function(){
+      $auth.submitRegistration($scope.signUpData)
+        .then(function(){
             var params = {email: $scope.signUpData.email, password: $scope.signUpData.password};
             $scope.doLogin(params);
             $state.go('app.test');
+            $scope.showAlert('Welcome!', 'Enjoy running, and we will keep track of your development');
             $ionicLoading.hide();
           }
         ).catch(function(error){
-          $scope.errorMessage = error;
-          $ionicLoading.hide();
+        $scope.errorMessage= error.data.errors.full_messages;
+        console.log('wrong',error);
+        console.log('try',$scope.errorMessage);
+        $ionicLoading.hide();
+        $scope.showAlert('Ooooops', error.data.errors.full_messages);
 
-        });
-      };
+      });
+    };
 
     $scope.doLogin = function(params){
-      $auth.submitLogin(params).then(
-        function(response){
+      $auth.submitLogin(params)
+        .then(function(response){
           console.log(response);
-        }
-      ).catch(
-        function(error){
-          $scope.errorMessage = error;
-          console.log(error);
-        }
-      );
+        })
+        .catch(
+          function(error){
+            $scope.errorMessage = error;
+            console.log(error);
+          });
     }
+    $scope.showAlert = function (message, content) {
+      var alertPopup = $ionicPopup.alert({
+        title: message,
+        template: content
+      });
+      alertPopup.then(function (res) {
+        // Place some action here if needed...
+      });
+    };
   })
 
-  //     $auth.submitRegistration($scope.registrationForm);
-  //     $auth.submitLogin({
-  //         email: $scope.registrationForm.email,
-  //         password: $scope.registrationForm.password
-  //       })
-  //
-  //       .then(function (resp) {
-  //         // handle success response
-  //         $ionicLoading.hide();
-  //         $window.location.href = '/templates/test/test.html';
-  //       })
-  //       .catch(function (resp) {
-  //         // handle error response
-  //       });
-  //   };
-  // })
+
 
   .controller('TestController', function ($scope) {
     $scope.gender = ['Male', 'Female']
